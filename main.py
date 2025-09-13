@@ -1,5 +1,8 @@
 import tkinter as tk
+from idlelib.autocomplete import FILES
+
 import Sus
+import os
 from tkinter import scrolledtext
 import getpass
 import platform
@@ -26,9 +29,12 @@ class CommandLineEmulator:
         self.text_area.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         # теги форматирования
-        self.text_area.tag_configure("prompt", foreground="green")
+        self.text_area.tag_configure("prompt", foreground="lime")
         self.text_area.tag_configure("output", foreground="white")
-        self.text_area.tag_configure("error", foreground="red")
+
+        self.prompt = ""  # строка вида username@hostname: ~$
+        self.current_directory = None  # None - корневая папка
+        self.change_directory(self.current_directory)
 
         self.first_prompt = True
 
@@ -44,19 +50,22 @@ class CommandLineEmulator:
 
     def show_prompt(self):
         """Выводит приглашение ко вводу"""
-        prompt = f"{self.username}@{self.hostname}: ~$ "
-
         if self.first_prompt:
             # Первое приглашение выводим без перевода строки
-            self.text_area.insert(tk.END, prompt, "prompt")
+            self.text_area.insert(tk.END, self.prompt, "prompt")
             self.first_prompt = False
         else:
             # Последующие приглашения выводим с новой строки
-            self.text_area.insert(tk.END, "\n" + prompt, "prompt")
+            self.text_area.insert(tk.END, "\n" + self.prompt, "prompt")
 
         # Прокручиваем вниз
         self.text_area.see(tk.END)
 
+
+    def change_directory(self, directory: str | None):
+        self.current_directory = directory
+        directory_string = self.current_directory if self.current_directory else "~"
+        self.prompt = f"{self.username}@{self.hostname}: {directory_string}$ "
 
 
     def print_output(self, text):
@@ -73,9 +82,8 @@ class CommandLineEmulator:
 
         if lines:
             last_line = lines[-1]
-            prompt = f"{self.username}@{self.hostname}: ~$ "
-            if last_line.startswith(prompt):
-                return last_line[len(prompt):]
+            if last_line.startswith(self.prompt):
+                return last_line[len(self.prompt):]
             else:
                 # Если приглашение было удалено, возвращаем всю строку
                 return last_line
@@ -95,6 +103,7 @@ class CommandLineEmulator:
             self.root.quit()
         elif command == "clear":
             self.clear_screen()
+
         elif command == "neofetch": Sus.sus(self)
         elif command == "help":
             self.print_output("Доступные команды:")
@@ -103,10 +112,21 @@ class CommandLineEmulator:
             self.print_output("  exit - выйти из эмулятора")
             self.print_output("  ls - заглушка")
             self.print_output("  cd - заглушка")
+
         elif command == "ls":
-            self.print_output(f"ls args: {args}")
+            file_list = os.listdir(self.current_directory)
+            res = ""
+            for el in file_list: res += el + " "
+            self.print_output(res)
+
         elif command == "cd":
-            self.print_output(f"cd args: {args}")
+            if len(args) == 0:
+                self.change_directory(None)
+                return
+            if os.path.exists(args[0]):
+                self.change_directory(args[0])
+            else:
+                self.print_output(f"{args[0]}: No such file or directory")
 
         else:
             self.print_output(f"Команда не найдена: {command}")
@@ -115,7 +135,6 @@ class CommandLineEmulator:
 
     def clear_screen(self):
         self.text_area.delete(1.0, tk.END)
-        self.prompt_positions = []
         self.first_prompt = True
 
 
