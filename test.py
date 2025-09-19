@@ -1,1 +1,2 @@
-print(1)
+f = open("start.sheesh")
+print(type(f))

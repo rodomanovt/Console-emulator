@@ -1,0 +1,18 @@
+echo start script running
+
+# echo listing files in home directory:
+ls
+
+cd vfs
+#echo listing files in vfs root:
+ls
+
+# ошибочная строка:
+do_smth some args
+
+cd vfs/lvl2
+# echo listing files in vfs level 2 folder:
+ls
+
+cd
+# echo script done

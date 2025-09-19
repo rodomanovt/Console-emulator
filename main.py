@@ -1,6 +1,5 @@
 import tkinter as tk
-from idlelib.autocomplete import FILES
-
+from typing import TextIO
 import Sus
 import os
 from tkinter import scrolledtext
@@ -28,7 +27,7 @@ class CommandLineEmulator:
         )
         self.text_area.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        # теги форматирования
+        # теги форматирования цвета текста
         self.text_area.tag_configure("prompt", foreground="lime")
         self.text_area.tag_configure("output", foreground="white")
 
@@ -37,6 +36,9 @@ class CommandLineEmulator:
         self.change_directory(self.current_directory)
 
         self.first_prompt = True
+
+        # Для пропуска ошибочных строк скрипта без вывода сообщения об ошибке
+        self.isScriptRunning = False
 
         # Выводим начальное приглашение
         self.show_prompt()
@@ -64,7 +66,7 @@ class CommandLineEmulator:
 
     def change_directory(self, directory: str | None):
         self.current_directory = directory
-        directory_string = self.current_directory if self.current_directory else "~"
+        directory_string = "~/" + self.current_directory if self.current_directory else "~"
         self.prompt = f"{self.username}@{self.hostname}: {directory_string}$ "
 
 
@@ -110,8 +112,12 @@ class CommandLineEmulator:
             self.print_output("  help - показать эту справку")
             self.print_output("  clear - очистить экран")
             self.print_output("  exit - выйти из эмулятора")
-            self.print_output("  ls - заглушка")
-            self.print_output("  cd - заглушка")
+            self.print_output("  echo - вывести текст")
+            self.print_output("  ls - перечислить файлы")
+            self.print_output("  cd - сменить директорию")
+
+        elif command == "echo":
+            self.print_output(" ".join(args))
 
         elif command == "ls":
             file_list = os.listdir(self.current_directory)
@@ -126,11 +132,39 @@ class CommandLineEmulator:
             if os.path.exists(args[0]):
                 self.change_directory(args[0])
             else:
-                self.print_output(f"{args[0]}: No such file or directory")
+                self.print_output(f"{args[0]}: файл или путь не найден")
+
+        elif  ".sheesh" in command:
+            try:
+                with open(command, "r") as script:
+                    self.run_script(script)
+            except FileNotFoundError:
+                self.print_output(f"{command}: команда не найдена")
 
         else:
-            self.print_output(f"Команда не найдена: {command}")
-            self.print_output("Введите 'help' для списка доступных команд")
+            if not self.isScriptRunning:
+                self.print_output(f"{command}: команда не найдена")
+
+
+    def print_script_command(self, command):
+        """
+        Для запуска sheesh-скриптов
+        Вывод промпта с командой для имитации диалога с пользователем
+        """
+        self.text_area.insert(tk.END, "\n" + self.prompt, "prompt")
+        self.text_area.insert(tk.END, command, "output")
+
+
+    def run_script(self, script: TextIO):
+        lines = script.readlines()
+        self.isScriptRunning = True
+        for line in lines:
+            line = line.strip()
+            if line: # в скрипте можно оставлять пустые строки
+                if line[0] != "#": # можно делать комментарии
+                    self.print_script_command(line)
+                    self.execute_command(line)
+        self.isScriptRunning = False
 
 
     def clear_screen(self):
