@@ -1,10 +1,10 @@
 import tkinter as tk
 from typing import TextIO
 import Sus
-import os
 from tkinter import scrolledtext
 import getpass
 import platform
+from VFSBuilder import *
 
 
 class CommandLineEmulator:
@@ -31,9 +31,13 @@ class CommandLineEmulator:
         self.text_area.tag_configure("prompt", foreground="lime")
         self.text_area.tag_configure("output", foreground="white")
 
-        self.prompt = ""  # строка вида username@hostname: ~$
-        self.current_directory = None  # None - корневая папка
-        self.change_directory(self.current_directory)
+        vfs_builder = VFSBuilder("vfs.json")
+        self.VFSROOT = vfs_builder.getRoot()
+
+        self.prompt = f"{self.username}@{self.hostname}: ~$ "  # строка вида username@hostname: ~$
+        self.current_directory = self.VFSROOT
+        self.directoryString = ""
+        self.change_directory("")
 
         self.first_prompt = True
 
@@ -64,10 +68,22 @@ class CommandLineEmulator:
         self.text_area.see(tk.END)
 
 
-    def change_directory(self, directory: str | None):
-        self.current_directory = directory
-        directory_string = "~/" + self.current_directory if self.current_directory else "~"
-        self.prompt = f"{self.username}@{self.hostname}: {directory_string}$ "
+    def change_directory(self, path: str):
+        if path:
+            pathSequence = path.split("/")
+            for folder in pathSequence:
+                if folder in self.current_directory.childrenNames:
+                    self.directoryString += f"/{folder}"
+                    self.current_directory = self.current_directory.getChild(folder)
+                    # TODO: неправильно обрабатывает случай вида folder2/fgdsgdfgssdfs
+                else:
+                    raise FileNotFoundError("Cannot find child directory")
+            self.prompt = f"{self.username}@{self.hostname}: ~{self.directoryString}$ "
+        else:
+            self.current_directory = self.VFSROOT
+            self.prompt = f"{self.username}@{self.hostname}: ~$ "
+            self.directoryString = ""
+
 
 
     def print_output(self, text):
@@ -120,18 +136,18 @@ class CommandLineEmulator:
             self.print_output(" ".join(args))
 
         elif command == "ls":
-            file_list = os.listdir(self.current_directory)
+            file_list = self.current_directory.children
             res = ""
-            for el in file_list: res += el + " "
+            for el in file_list: res += el.name + " "
             self.print_output(res)
 
         elif command == "cd":
             if len(args) == 0:
-                self.change_directory(None)
+                self.change_directory("")
                 return
-            if os.path.exists(args[0]):
+            try:
                 self.change_directory(args[0])
-            else:
+            except FileNotFoundError:
                 self.print_output(f"{args[0]}: файл или путь не найден")
 
         elif  ".sheesh" in command:

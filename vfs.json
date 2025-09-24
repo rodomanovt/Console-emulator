@@ -1,0 +1,20 @@
+{
+  "name": "home",
+  "children": [
+    {
+      "name": "folder1",
+      "children": [
+        {"name": "file1.txt", "children": []},
+        {"name": "file2.txt", "children": []}
+      ]
+    },
+    {
+      "name": "folder2",
+      "children": [
+        {"name": "subfolder1", "children": [
+          {"name":  "file3.txt", "children":  []}
+        ]}
+      ]
+    }
+  ]
+}
