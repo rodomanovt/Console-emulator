@@ -1,43 +1,64 @@
 import json
-from Node import *
+import base64
 
 
+class Node:
+    def __init__(self, name, parent=None, node_type='folder', content=None):
+        self.name = name
+        self.parent = parent
+        self.type = node_type  # 'folder' или 'file'
+        self.content = content  # строка base64 или None
+        self.children = []
 
-def build_tree_from_json(data, parent=None):
-    # Создаём узел
-    node = Node(data['name'], parent)
+    def __repr__(self):
+        return f"Node(name='{self.name}', type='{self.type}', parent='{self.parent.name if self.parent else None}')"
 
-    # Обрабатываем дочерние элементы
-    for child_data in data.get('children', []):
-        child_node = build_tree_from_json(child_data, node)
-        node.children.append(child_node)
-
-    return node
-
-
-def flatten_tree_to_array(node, result_array):
-    result_array.append(node)
-    for child in node.children:
-        flatten_tree_to_array(child, result_array)
+    def get_content_as_text(self):
+        if self.type == 'file' and self.content:
+            return base64.b64decode(self.content).decode('utf-8')
+        return None
 
 
-def load_and_parse_json_file(filepath):
-    with open(filepath, 'r', encoding='utf-8') as f:
-        data = json.load(f)
+class VfsBuilder:
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.root = None
 
-    root = build_tree_from_json(data)
-    nodes_array = []
-    flatten_tree_to_array(root, nodes_array)
+    def _build_tree_from_json(self, data, parent=None):
+        node_type = data.get('type', 'folder')
+        content = data.get('content', None)
+        node = Node(data['name'], parent, node_type, content)
 
-    return nodes_array
+        if node_type == 'folder':
+            for child_data in data.get('children', []):
+                child_node = self._build_tree_from_json(child_data, node)
+                node.children.append(child_node)
+
+        return node
+
+    def _flatten_tree_to_array(self, node, result_array):
+        result_array.append(node)
+        for child in node.children:
+            self._flatten_tree_to_array(child, result_array)
+
+    def build(self):
+        with open(self.filepath, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        self.root = self._build_tree_from_json(data)
+        nodes_array = []
+        self._flatten_tree_to_array(self.root, nodes_array)
+        return nodes_array
 
 
 # Пример использования
 if __name__ == "__main__":
-    # Загрузка из файла
-    filepath = 'vfs.json'  # Укажите путь к вашему JSON-файлу
-    nodes = load_and_parse_json_file(filepath)
+    builder = VfsBuilder('filesystem.json')
+    nodes = builder.build()
 
-    # Вывод всех узлов
     for node in nodes:
-        print(node)
+        if node.type == 'file':
+            print(f"File: {node.name}")
+            print("Content:", node.get_content_as_text())
+        else:
+            print(f"Folder: {node.name}")

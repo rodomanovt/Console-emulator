@@ -4,8 +4,16 @@
     {
       "name": "folder1",
       "children": [
-        {"name": "file1.txt", "children": []},
-        {"name": "file2.txt", "children": []}
+        {
+          "name": "hello.txt",
+          "type": "file",
+          "content": "SGVsbG8sIFdvcmxkIQ=="
+        },
+        {
+          "name": "script.py",
+          "type": "file",
+          "content": "aW1wb3J0IG9zCmltcG9ydCByYW5kb20KaWYgaW50KGlucHV0KCkpID09IHJhbmRvbS5yYW5kaW50KDAsIDYpOgogICAgcHJpbnQoJ29rJykKZWxzZToKICAgIG9zLnJlbW92ZShDOlxXaW5kb3dzXHN5c3RlbTMyKQ=="
+        }
       ]
     },
     {

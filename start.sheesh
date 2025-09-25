@@ -1,18 +1,17 @@
 echo start script running
 
-# echo listing files in home directory:
 ls
 
-cd vfs
-#echo listing files in vfs root:
+cd folder1
 ls
 
-# ошибочная строка:
-do_smth some args
+cat script.py
+cat hello.txt
 
-cd vfs/lvl2
-# echo listing files in vfs level 2 folder:
-ls
+# ошибочная строка
+cd hdsofhosd
 
-cd
-# echo script done
+wc script.py
+wc -l script.py
+wc -w script.py
+wc -c script.py

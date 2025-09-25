@@ -74,10 +74,14 @@ class CommandLineEmulator:
             for folder in pathSequence:
                 if folder in self.current_directory.childrenNames:
                     self.directoryString += f"/{folder}"
-                    self.current_directory = self.current_directory.getChild(folder)
+                    if self.current_directory.getChild(folder).type == 'folder':
+                        self.current_directory = self.current_directory.getChild(folder)
+                    else:
+                        raise FileNotFoundError
                     # TODO: неправильно обрабатывает случай вида folder2/fgdsgdfgssdfs
                 else:
-                    raise FileNotFoundError("Cannot find child directory")
+                    raise FileNotFoundError
+
             self.prompt = f"{self.username}@{self.hostname}: ~{self.directoryString}$ "
         else:
             self.current_directory = self.VFSROOT
@@ -119,10 +123,12 @@ class CommandLineEmulator:
 
         if command == "exit":
             self.root.quit()
+
+
         elif command == "clear":
             self.clear_screen()
 
-        elif command == "neofetch": Sus.sus(self)
+
         elif command == "help":
             self.print_output("Доступные команды:")
             self.print_output("  help - показать эту справку")
@@ -131,15 +137,23 @@ class CommandLineEmulator:
             self.print_output("  echo - вывести текст")
             self.print_output("  ls - перечислить файлы")
             self.print_output("  cd - сменить директорию")
+            self.print_output("  cat - вывести содержимое файла")
+            self.print_output("  tac - вывести содержимое файла в обратном порядке")
+            self.print_output("  wc - вывести информацию о файле")
+            self.print_output("  rm - ")
+        elif command == "neofetch": Sus.sus(self)
+
 
         elif command == "echo":
             self.print_output(" ".join(args))
+
 
         elif command == "ls":
             file_list = self.current_directory.children
             res = ""
             for el in file_list: res += el.name + " "
             self.print_output(res)
+
 
         elif command == "cd":
             if len(args) == 0:
@@ -148,7 +162,51 @@ class CommandLineEmulator:
             try:
                 self.change_directory(args[0])
             except FileNotFoundError:
-                self.print_output(f"{args[0]}: файл или путь не найден")
+                if not self.isScriptRunning: self.print_output(f"{args[0]}: путь не найден")
+
+
+        elif command == "cat":
+            if len(args) > 0:
+                if args[0] in self.current_directory.childrenNames:
+                    self.print_output(self.current_directory.getChild(args[0]).readContent())
+                else:
+                    if not self.isScriptRunning: self.print_output(f"{args[0]}: файл не найден")
+
+
+        elif command == "tac":
+            if len(args) > 0:
+                if args[0] in self.current_directory.childrenNames:
+                    self.print_output(self.current_directory.getChild(args[0]).readContent(reverse=True))
+                else:
+                    if not self.isScriptRunning: self.print_output(f"{args[0]}: файл не найден")
+
+
+        elif command == "wc":
+            if len(args) > 0:
+                if args[-1] in self.current_directory.childrenNames:
+                    text = self.current_directory.getChild(args[-1]).readContent()
+
+                    lines = len(text.split('\n'))
+                    words = len(text.replace('\n', ' ').split())
+                    bytes = len(text) + 1 # учитываем символ конца файла
+
+                    if len(args) != 1:
+                        if args[0] == "-l": # lines
+                            self.print_output(f"{lines} {args[-1]}")
+                        elif args[0] == "-w": # words
+                            self.print_output(f"{words} {args[-1]}")
+                        elif args[0] == "-c": # bytes
+                            self.print_output(f"{bytes} {args[-1]}")
+                    else:
+                        self.print_output(f"{lines} {words} {bytes} {args[-1]}")
+
+                else:
+                    if not self.isScriptRunning: self.print_output(f"{args[0]}: файл не найден")
+
+
+        elif command == "rm":
+            pass # TODO
+
 
         elif  ".sheesh" in command:
             try:

@@ -1,0 +1,5 @@
+cd folder1
+wc script.py
+wc -l script.py
+wc -w script.py
+wc -c script.py
