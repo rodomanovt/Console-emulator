@@ -2,7 +2,7 @@
   "name": "home",
   "children": [
     {
-      "name": "folder1",
+      "name": "documents",
       "children": [
         {
           "name": "hello.txt",
@@ -17,10 +17,31 @@
       ]
     },
     {
-      "name": "folder2",
+      "name": "lvl1",
       "children": [
-        {"name": "subfolder1", "children": [
-          {"name":  "file3.txt", "children":  []}
+        {
+          "name":  "file1.txt",
+          "type": "file",
+          "content": "bGV2ZWwgb25lIGZpbGU="
+        },
+        {
+          "name": "lvl2",
+          "children": [
+          {
+          "name":  "file2.txt",
+          "type": "file",
+          "content": "bGV2ZWwgdHdvIGZpbGU="
+          },
+            {
+              "name": "lvl3",
+              "children": [
+                {
+                "name":  "file3.txt",
+                "type": "file",
+                "content": "bGV2ZWwgdGhyZWUgZmlsZQ=="
+                }
+              ]
+            }
         ]}
       ]
     }

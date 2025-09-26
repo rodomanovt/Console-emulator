@@ -1,12 +1,22 @@
 echo start script running
 
 ls
-
-cd folder1
+cd lvl1
 ls
+cd lvl2
+ls
+cd lvl3
+ls
+cd
+cd lvl1/lvl2/lvl3
+ls
+cd
 
+cd documents
+ls
 cat script.py
 cat hello.txt
+tac script.py
 
 # ошибочная строка
 cd hdsofhosd
@@ -15,3 +25,15 @@ wc script.py
 wc -l script.py
 wc -w script.py
 wc -c script.py
+
+rm hello.txt
+ls
+
+cd
+cd lvl1/lvl2
+rm -r
+ls
+cd
+rm -r lvl1
+cd lvl1
+ls

@@ -211,7 +211,28 @@ class CommandLineEmulator:
 
 
         elif command == "rm":
-            pass # TODO
+            if len(args) > 0:
+                if len(args) == 1: # удаление одного файла
+                    if args[-1] in self.current_directory.childrenNames:
+                        file = self.current_directory.getChild(args[-1])
+                        if file.type == "file":
+                            self.current_directory.children.remove(file)
+                            self.current_directory.childrenNames.remove(file.name)
+
+                    if args[0] == '-r': # удаление текущей директроии
+                        self.current_directory.children = []
+                        self.current_directory.childrenNames = []
+
+                else:
+                    if args[0] == '-r': # удаление поддиректории
+                        if args[-1] in self.current_directory.childrenNames:
+                            folder = self.current_directory.getChild(args[-1])
+                            if folder.type == "folder":
+                                print(folder.name)
+                                folder.children = []
+                                folder.childrenNames = []
+                            elif not self.isScriptRunning: self.print_output(f"{args[1]}: путь не найден")
+                        elif not self.isScriptRunning: self.print_output(f"{args[0]}: путь не найден")
 
 
         elif  ".sheesh" in command:
