@@ -71,16 +71,22 @@ class CommandLineEmulator:
     def change_directory(self, path: str):
         if path:
             pathSequence = path.split("/")
+
+            """Проверка что путь существует"""
+            tempDirectory = self.current_directory
             for folder in pathSequence:
-                if folder in self.current_directory.childrenNames:
-                    self.directoryString += f"/{folder}"
-                    if self.current_directory.getChild(folder).type == 'folder':
-                        self.current_directory = self.current_directory.getChild(folder)
+                if folder in tempDirectory.childrenNames:
+                    if tempDirectory.getChild(folder).type == "folder":
+                        tempDirectory = tempDirectory.getChild(folder)
                     else:
                         raise FileNotFoundError
-                    # TODO: неправильно обрабатывает случай вида folder2/fgdsgdfgssdfs
                 else:
                     raise FileNotFoundError
+
+            """Переход по пути"""
+            for folder in pathSequence:
+                self.directoryString += f"/{folder}"
+                self.current_directory = self.current_directory.getChild(folder)
 
             self.prompt = f"{self.username}@{self.hostname}: ~{self.directoryString}$ "
         else:
