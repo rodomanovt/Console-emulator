@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f16a1ab-4060-4e12-81e5-0cd1b5fea6db" name="Changes" comment="Add json VFS">
+      <change afterPath="$PROJECT_DIR$/cat.sheesh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cdls.sheesh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rm.sheesh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wc.sheesh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/console-emulator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/console-emulator.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encodeToBase64.py" beforeDir="false" afterPath="$PROJECT_DIR$/encodeToBase64.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start.sheesh" beforeDir="false" afterPath="$PROJECT_DIR$/start.sheesh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vfs.json" beforeDir="false" afterPath="$PROJECT_DIR$/vfs.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,10 +163,11 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-8753aad8314d-d902c0275401-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-252.25557.178" />
+        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="2f16a1ab-4060-4e12-81e5-0cd1b5fea6db" name="Changes" comment="" />

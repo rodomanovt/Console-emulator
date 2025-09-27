@@ -1,0 +1,5 @@
+cd documents
+ls
+cat script.py
+cat hello.txt
+tac script.py

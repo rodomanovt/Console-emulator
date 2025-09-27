@@ -1,0 +1,11 @@
+ls
+cd lvl1
+ls
+cd lvl2
+ls
+cd lvl3
+ls
+cd
+cd lvl1/lvl2/lvl3
+ls
+cd

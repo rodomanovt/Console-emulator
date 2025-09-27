@@ -1,0 +1,9 @@
+cd documents
+wc script.py
+# echo correct result: 6 12 122 script.py
+wc -l script.py
+# echo correct result: 6 script.py
+wc -w script.py
+# echo correct result: 12 script.py
+wc -c script.py
+# echo correct result: 12 script.py

@@ -229,8 +229,10 @@ class CommandLineEmulator:
                             folder = self.current_directory.getChild(args[-1])
                             if folder.type == "folder":
                                 print(folder.name)
-                                folder.children = []
-                                folder.childrenNames = []
+                                folder.parent.childrenNames.remove(folder.name)
+                                folder.parent.children.remove(folder)
+                                # folder.children = []
+                                # folder.childrenNames = []
                             elif not self.isScriptRunning: self.print_output(f"{args[1]}: путь не найден")
                         elif not self.isScriptRunning: self.print_output(f"{args[0]}: путь не найден")
 

@@ -1,0 +1,8 @@
+cd documents
+ls
+rm hello.txt
+ls
+cd
+ls
+rm -r documents
+ls
