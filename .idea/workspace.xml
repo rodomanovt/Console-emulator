@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f16a1ab-4060-4e12-81e5-0cd1b5fea6db" name="Changes" comment="Add json VFS">
-      <change afterPath="$PROJECT_DIR$/cat.sheesh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cdls.sheesh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rm.sheesh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wc.sheesh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/console-emulator.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/console-emulator.iml" afterDir="false" />
+    <list default="true" id="2f16a1ab-4060-4e12-81e5-0cd1b5fea6db" name="Changes" comment="Fix rm and add test scripts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -192,12 +188,32 @@
       <option name="project" value="LOCAL" />
       <updated>1758729689662</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix rm and add test scripts">
+      <option name="closed" value="true" />
+      <created>1758960703000</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1758960703000</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add sheesh script support" />
     <MESSAGE value="Add json VFS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add json VFS" />
+    <MESSAGE value="Fix rm and add test scripts" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix rm and add test scripts" />
   </component>
 </project>

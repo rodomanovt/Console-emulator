@@ -146,7 +146,7 @@ class CommandLineEmulator:
             self.print_output("  cat - вывести содержимое файла")
             self.print_output("  tac - вывести содержимое файла в обратном порядке")
             self.print_output("  wc - вывести информацию о файле")
-            self.print_output("  rm - ")
+            self.print_output("  rm - удалить файл или папку")
         elif command == "neofetch": Sus.sus(self)
 
 
